@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proposal</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      font-family: Georgia, sans-serif;
+      background-color: lightpink; /* Light pink background color */
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    #bunny {
+      width: 250px;
+      display: block;
+      margin: 50px auto;
+    }
+    #proposal {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+    .button-container {
+      justify-content: center;
+      margin-top: 20px;
+      position: relative;
+      display: block;
+      width: 100vw;
+      height: 100vh;
+    }
+    .button {
+      padding: 10px 20px;
+      margin: 0 10px;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 20px;
+      font-size: 16px;
+      transition: background-color 0.5s;
+    }
+    .button.yes {
+      background-color: black;
+    }
+    .button.no {
+      background-color: black;
+    }
+    .button.yes:hover {
+      background-color: green;
+      filter: brightness(120%);
+    }
+    .button.no:hover {
+      background-color: red;
+      filter: brightness(90%);
+    }
+    /* Additional CSS for changing text content on hover */
+    .button.yes:hover::after {
+      content: " ✅";
+    }
+    .button.no:hover::after {
+      content: " ❌";
+    }
+  </style>
+</head>
+<body>
+<img id="bunny" src="proposing.gif" alt="Bunny Couple">
+<div id="proposal">Will you marry me? 💍</div>
+<div class="button-container">
+  <button id="yesButton" class="button yes" onclick="vote('YES')">YES</button>
+  <button id="noButton" class="button no" onclick="vote('NO')">NO</button>
+</div>
+
+<script>
+  let noClicked = 0
+
+  const noButton = document.getElementById("noButton");
+  const yesButton = document.getElementById("yesButton");
+
+  function removeButton() {
+    const buttonContainer = document.querySelector(".button-container");
+    buttonContainer.removeChild(noButton);
+    buttonContainer.removeChild(yesButton);
+  }
+
+  noButton.addEventListener("mouseover", function() {
+    if (noClicked >= 2) {
+      moveButton(this);
+    }
+  });
+
+  function moveButton(button) {
+    const containerWidth = 500;
+    const containerHeight = 200;
+
+    const buttonWidth = button.offsetWidth;
+    const buttonHeight = button.offsetHeight;
+
+    const maxLeft = containerWidth - buttonWidth;
+    const maxTop = containerHeight - buttonHeight;
+
+    const newLeft = Math.floor(Math.random() * maxLeft);
+    const newTop = Math.floor(Math.random() * maxTop);
+
+    button.style.position = "absolute";
+    button.style.left = newLeft + "px";
+    button.style.top = newTop + "px";
+
+    button.classList.add("unclickable");
+    setTimeout(function() {
+      button.classList.remove("unclickable");
+    }, 5);
+  }
+
+  function vote(choice) {
+    let proposalDiv = document.getElementById("proposal");
+    let bunnyImg = document.getElementById("bunny");
+    if (choice === 'YES') {
+      proposalDiv.innerHTML = "I knew it. 😌😉";
+      bunnyImg.src = "I knew it.gif";
+      removeButton();
+    } else if (choice === 'NO') {
+      if (noClicked === 0) {
+        proposalDiv.innerHTML = "Soch le ek bar firse! 😟";
+        bunnyImg.src = "hug.gif";
+        noClicked++
+      } else if (noClicked === 1) {
+        proposalDiv.innerHTML = "Kyu kar rhi hai aisa. 🥲 Maan ja pleej 🙏🏻🙏🏻";
+        bunnyImg.src = "cry.gif";
+        noClicked++
+      } else {
+        proposalDiv.innerHTML = "Tuje karni padegi. 😠😠😠";
+        bunnyImg.src = "angry.gif";
+        noClicked++
+      }
+    }
+  }
+</script>
+</body>
+</html>
